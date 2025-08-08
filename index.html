@@ -15,31 +15,80 @@
 
   <main>
     <form id="costForm">
-      <section class="input-group">
-        <label for="vmSize">Select VM Size:</label>
+      <fieldset>
+        <legend>Session Host Configuration</legend>
+        <label for="vmSize">VM Size:</label>
         <select id="vmSize">
-          <option value="D2s_v3">D2s_v3 (2 vCPU, 8 GB RAM)</option>
-          <option value="D4s_v3">D4s_v3 (4 vCPU, 16 GB RAM)</option>
-          <option value="D8s_v3">D8s_v3 (8 vCPU, 32 GB RAM)</option>
-          <option value="B2ms">B2ms (2 vCPU, 8 GB RAM)</option>
-          <option value="B4ms">B4ms (4 vCPU, 16 GB RAM)</option>
+          <option value="B2ms">B2ms (2 vCPU, 8 GB RAM) - $0.08/hr</option>
+          <option value="B4ms">B4ms (4 vCPU, 16 GB RAM) - $0.15/hr</option>
+          <option value="D2s_v5">D2s_v5 (2 vCPU, 8 GB RAM) - $0.12/hr</option>
+          <option value="D4s_v5">D4s_v5 (4 vCPU, 16 GB RAM) - $0.25/hr</option>
+          <option value="D8s_v5">D8s_v5 (8 vCPU, 32 GB RAM) - $0.50/hr</option>
+          <option value="D2as_v5">D2as_v5 (2 vCPU, 8 GB RAM) - $0.11/hr</option>
+          <option value="D4as_v5">D4as_v5 (4 vCPU, 16 GB RAM) - $0.22/hr</option>
+          <option value="D8as_v5">D8as_v5 (8 vCPU, 32 GB RAM) - $0.44/hr</option>
+          <option value="D2dls_v5">D2dls_v5 (2 vCPU, 8 GB RAM) - $0.13/hr</option>
+          <option value="D4dls_v5">D4dls_v5 (4 vCPU, 16 GB RAM) - $0.26/hr</option>
+          <option value="D8dls_v5">D8dls_v5 (8 vCPU, 32 GB RAM) - $0.52/hr</option>
+          <option value="E2s_v5">E2s_v5 (2 vCPU, 16 GB RAM) - $0.20/hr</option>
+          <option value="E4s_v5">E4s_v5 (4 vCPU, 32 GB RAM) - $0.35/hr</option>
+          <option value="E8s_v5">E8s_v5 (8 vCPU, 64 GB RAM) - $0.70/hr</option>
+          <option value="E2as_v5">E2as_v5 (2 vCPU, 16 GB RAM) - $0.18/hr</option>
+          <option value="E4as_v5">E4as_v5 (4 vCPU, 32 GB RAM) - $0.33/hr</option>
+          <option value="E8as_v5">E8as_v5 (8 vCPU, 64 GB RAM) - $0.66/hr</option>
+          <option value="E2dls_v5">E2dls_v5 (2 vCPU, 16 GB RAM) - $0.21/hr</option>
+          <option value="E4dls_v5">E4dls_v5 (4 vCPU, 32 GB RAM) - $0.38/hr</option>
+          <option value="E8dls_v5">E8dls_v5 (8 vCPU, 64 GB RAM) - $0.75/hr</option>
         </select>
 
         <label for="sessionHosts">Number of Session Hosts:</label>
         <input type="number" id="sessionHosts" value="2" min="1" />
-      </section>
+      </fieldset>
 
-      <section class="input-group">
-        <label><input type="checkbox" id="natGateway" /> Include NAT Gateway</label>
-        <label><input type="checkbox" id="law" /> Include Log Analytics Workspace</label>
-        <label><input type="checkbox" id="mgmtServer" /> Include Management Server (B4ms)</label>
-        <label><input type="checkbox" id="goldenImage" /> Include Golden Image Server (B4ms)</label>
-        <label><input type="checkbox" id="m365License" /> Include Microsoft 365 Business Standard License</label>
+      <fieldset>
+        <legend>Disk Configuration</legend>
+        <label for="fslogixSize">FSLogix Disk Size (GB):</label>
+        <input type="range" id="fslogixSize" min="0" max="100" step="5" value="30" />
+        <span id="fslogixValue">30 GB</span>
+        <label><input type="checkbox" id="includeFslogix" checked /> Include FSLogix</label>
+
+        <label for="osDiskSize">OS Disk Size (GB):</label>
+        <input type="range" id="osDiskSize" min="64" max="512" step="32" value="128" />
+        <span id="osDiskValue">128 GB</span>
+      </fieldset>
+
+      <fieldset>
+        <legend>Usage & Region</legend>
+        <label for="usageHours">Monthly Usage Hours:</label>
+        <select id="usageHours">
+          <option value="730">730 hrs (24/7)</option>
+          <option value="184">184 hrs (8 hrs × 23 days)</option>
+          <option value="240">240 hrs (8 hrs × 30 days)</option>
+        </select>
+
+        <label for="region">Azure Region:</label>
+        <select id="region">
+          <option value="Australia East">Australia East</option>
+          <option value="Australia Southeast">Australia Southeast</option>
+        </select>
+      </fieldset>
+
+      <fieldset>
+        <legend>Optional Components</legend>
+        <label><input type="checkbox" id="natGateway" /> NAT Gateway</label>
+        <label><input type="checkbox" id="law" /> Log Analytics Workspace</label>
+        <label><input type="checkbox" id="mgmtServer" /> Management Server (B4ms, includes Windows license)</label>
+        <label><input type="checkbox" id="goldenImage" /> Golden Image Server (B4ms, includes Windows license)</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Licensing</legend>
+        <label><input type="checkbox" id="m365License" /> Microsoft 365 Business Standard</label>
         <label for="userCount">Number of AVD Users:</label>
         <input type="number" id="userCount" value="10" min="1" />
-      </section>
+      </fieldset>
 
-      <button type="button" onclick="calculateCost()">Calculate</button>
+      <button type="button" onclick="calculateCost()">Calculate Cost</button>
     </form>
 
     <div id="chartContainer">
@@ -51,7 +100,7 @@
   </main>
 
   <footer>
-    <p>Disclaimer: VM prices include Windows license. All costs are estimates in AUD.</p>
+    <p>Disclaimer: VM prices include Windows license. All costs are estimates in AUD and may vary due to currency conversion.</p>
   </footer>
 
   <script src="script.js"></script>
