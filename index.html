@@ -5,58 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AVD Cost Calculator</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="container">
+  <header>
     <h1>AVD Cost Calculator</h1>
+    <div id="topTotalCost" class="total-cost-display">Total Monthly Cost: $0 AUD</div>
+  </header>
 
-    <section class="config">
-      <label for="location">Location:</label>
-      <select id="location">
-        <option value="australia-east">Australia East</option>
-        <option value="australia-southeast">Australia Southeast</option>
-      </select>
+  <main>
+    <form id="costForm">
+      <section class="input-group">
+        <label for="vmSize">Select VM Size:</label>
+        <select id="vmSize">
+          <option value="D2s_v3">D2s_v3 (2 vCPU, 8 GB RAM)</option>
+          <option value="D4s_v3">D4s_v3 (4 vCPU, 16 GB RAM)</option>
+          <option value="D8s_v3">D8s_v3 (8 vCPU, 32 GB RAM)</option>
+          <option value="B2ms">B2ms (2 vCPU, 8 GB RAM)</option>
+          <option value="B4ms">B4ms (4 vCPU, 16 GB RAM)</option>
+        </select>
 
-      <label for="vm-search">Search VM:</label>
-      <input type="text" id="vm-search" placeholder="e.g. D4s" />
-      <select id="vm-type"></select>
+        <label for="sessionHosts">Number of Session Hosts:</label>
+        <input type="number" id="sessionHosts" value="2" min="1" />
+      </section>
 
-      <label for="fslogix">FSLogix Size (GB):</label>
-      <input type="range" id="fslogix" min="0" max="100" step="5" value="30" />
-      <span id="fslogix-value">30 GB</span>
-      <label><input type="checkbox" id="fslogix-toggle" checked /> Include FSLogix</label>
+      <section class="input-group">
+        <label><input type="checkbox" id="natGateway" /> Include NAT Gateway</label>
+        <label><input type="checkbox" id="law" /> Include Log Analytics Workspace</label>
+        <label><input type="checkbox" id="mgmtServer" /> Include Management Server (B4ms)</label>
+        <label><input type="checkbox" id="goldenImage" /> Include Golden Image Server (B4ms)</label>
+        <label><input type="checkbox" id="m365License" /> Include Microsoft 365 Business Standard License</label>
+        <label for="userCount">Number of AVD Users:</label>
+        <input type="number" id="userCount" value="10" min="1" />
+      </section>
 
-      <label for="osdisk">OS Disk Size (GB):</label>
-      <input type="range" id="osdisk" min="64" max="512" step="32" value="128" />
-      <span id="osdisk-value">128 GB</span>
+      <button type="button" onclick="calculateCost()">Calculate</button>
+    </form>
 
-      <label for="hours">Usage Hours:</label>
-      <select id="hours">
-        <option value="730">730 hrs/month</option>
-        <option value="184">8 hrs/day × 23 days</option>
-        <option value="200">Include weekends</option>
-      </select>
+    <div id="chartContainer">
+      <canvas id="costChart"></canvas>
+      <div id="chartTotalCost" class="total-cost-display">Total Monthly Cost: $0 AUD</div>
+    </div>
 
-      <label><input type="checkbox" id="nat-toggle" checked /> Include NAT Gateway</label>
-      <label><input type="checkbox" id="law-toggle" /> Include Log Analytics Workspace</label>
-      <label><input type="checkbox" id="mgmt-toggle" /> Include Management Server</label>
-      <label><input type="checkbox" id="golden-toggle" /> Include Golden Image VM</label>
+    <div id="breakdownTable"></div>
+  </main>
 
-      <label for="session-hosts">Number of AVD Session Hosts:</label>
-      <input type="number" id="session-hosts" min="1" value="10" />
-    </section>
+  <footer>
+    <p>Disclaimer: VM prices include Windows license. All costs are estimates in AUD.</p>
+  </footer>
 
-    <section class="results">
-      <canvas id="costChart" width="400" height="200"></canvas>
-      <table id="cost-table"></table>
-      <button id="download-csv">Download CSV</button>
-      <button id="download-pdf">Download PDF</button>
-      <p class="disclaimer">* Prices are estimates in AUD and may vary due to currency conversion (7–9% buffer included).</p>
-    </section>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
