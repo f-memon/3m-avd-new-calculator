@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3rdmill Tools | AVD Cost Calculator (Basic)</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="../../index.html" class="brand">
+        <img src="../../assets/3rdmill-logo.png" alt="3rdmill" class="logo">
+        <span class="brand-text">3rdmill Tools</span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="page-wrap">
+    <a href="../../index.html" class="back-link">&larr; Back to Tools</a>
+
+    <header class="page-header">
+      <h1>AVD Cost Calculator (Basic)</h1>
+      <div id="topTotalCost" class="total-cost-display">Total Monthly Cost: $0 AUD</div>
+    </header>
+
+    <main>
+      <form id="costForm">
+        <fieldset>
+          <legend>Session Host Configuration</legend>
+          <label for="vmSize">VM Size:</label>
+          <select id="vmSize">
+            <option value="">Loading pricing…</option>
+          </select>
+
+          <label for="sessionHosts">Number of Session Hosts:</label>
+          <input type="number" id="sessionHosts" value="2" min="1" />
+        </fieldset>
+
+        <fieldset>
+          <legend>Disk Configuration</legend>
+          <label for="fslogixSize">FSLogix Disk Size (GB):</label>
+          <input type="range" id="fslogixSize" min="0" max="100" step="5" value="30" />
+          <span id="fslogixValue">30 GB</span>
+          <label><input type="checkbox" id="includeFslogix" checked /> Include FSLogix</label>
+
+          <label for="osDiskSize">OS Disk Size (GB):</label>
+          <input type="range" id="osDiskSize" min="64" max="512" step="32" value="128" />
+          <span id="osDiskValue">128 GB</span>
+        </fieldset>
+
+        <fieldset>
+          <legend>Usage & Region</legend>
+          <label for="usageHours">Monthly Usage Hours:</label>
+          <select id="usageHours">
+            <option value="730">730 hrs (24/7)</option>
+            <option value="184">184 hrs (8 hrs × 23 days)</option>
+            <option value="240">240 hrs (8 hrs × 30 days)</option>
+          </select>
+
+          <label for="region">Azure Region:</label>
+          <select id="region">
+            <option value="Australia East">Australia East</option>
+            <option value="Australia Southeast">Australia Southeast</option>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <legend>Optional Components</legend>
+          <label><input type="checkbox" id="natGateway" /> NAT Gateway</label>
+          <label><input type="checkbox" id="law" /> Log Analytics Workspace</label>
+          <label><input type="checkbox" id="mgmtServer" /> Management Server (B4ms, includes Windows license)</label>
+          <label><input type="checkbox" id="goldenImage" /> Golden Image Server (B4ms, includes Windows license)</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Licensing</legend>
+          <label><input type="checkbox" id="m365License" /> Microsoft 365 Business Standard</label>
+          <label for="userCount">Number of AVD Users:</label>
+          <input type="number" id="userCount" value="10" min="1" />
+        </fieldset>
+
+        <button type="button" onclick="calculateCost()">Calculate Cost</button>
+      </form>
+
+      <div id="chartContainer">
+        <canvas id="costChart"></canvas>
+        <div id="chartTotalCost" class="total-cost-display">Total Monthly Cost: $0 AUD</div>
+      </div>
+
+      <div id="breakdownTable"></div>
+    </main>
+
+    <div class="accent-bar"></div>
+
+    <footer>
+      <p>&copy; 2025 3rdmill. All rights reserved. | Simple, powerful and secure tools built for modern efficiency. Engineer | FM - 3m</p>
+      <p class="disclaimer">Disclaimer: VM prices are Azure Virtual Desktop / Linux-basis compute rates (no separate Windows OS charge). All costs are estimates in AUD and may vary due to currency conversion and pricing updates. Entries marked ⚠ in the VM dropdown are unverified — see vmpricing.json.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
